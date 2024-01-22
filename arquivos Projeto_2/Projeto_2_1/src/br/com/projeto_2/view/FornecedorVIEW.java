@@ -1,0 +1,416 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
+ */
+
+package br.com.projeto_2.view;
+
+import java.awt.Dimension;
+import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
+import br.com.projeto_2.dto.FornecedorDTO;
+import br.com.projeto_2.ctr.FornecedorCTR;
+import java.text.SimpleDateFormat;
+/**
+ *
+ * @author Aluno
+ */
+public class FornecedorVIEW extends javax.swing.JInternalFrame {
+
+    SimpleDateFormat data_format = new SimpleDateFormat("dd/mm/yyyy");
+
+    FornecedorDTO fornecedorDTO = new FornecedorDTO();
+    FornecedorCTR fornecedorCTR = new FornecedorCTR();
+
+    int gravar_alterar;
+    ResultSet rs;
+    DefaultTableModel modelo_jtl_consultar_fornecedor;
+    
+    /** Creates new form FornecedorVIEW */
+    public FornecedorVIEW() {
+        initComponents();
+        
+        liberaCampos(false);
+        liberaBotoes(true, false, false, false, true);
+
+        modelo_jtl_consultar_fornecedor = (DefaultTableModel) jtl_consultar_fornecedor.getModel();
+    }
+    
+    public void setPosicao() {
+        Dimension d = this.getDesktopPane().getSize();
+        this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2);
+    }
+
+    private void liberaCampos(boolean a) {
+        nome_for.setEnabled(a);
+        cnpj_for.setEnabled(a);
+        tel_for.setEnabled(a);
+        data_cad_for.setEnabled(a);
+    }
+
+    private void limpaCampos() {
+        nome_for.setText("");
+        cnpj_for.setText("");
+        tel_for.setText("");
+        data_cad_for.setText("");
+    }
+
+    private void liberaBotoes(boolean a, boolean b, boolean c, boolean d, boolean e) {
+        btnNovo.setEnabled(a);
+        btnSalvar.setEnabled(b);
+        btnCancelar.setEnabled(c);
+        btnExcluir.setEnabled(d);
+        btnSair.setEnabled(e);
+    }
+
+    private void gravar() {
+        try {
+            fornecedorDTO.setNome_for(nome_for.getText());
+            fornecedorDTO.setCnpj_for(cnpj_for.getText());
+            fornecedorDTO.setTel_for(tel_for.getText());
+            fornecedorDTO.setData_cad_for(data_format.parse(data_cad_for.getText()));
+
+            JOptionPane.showMessageDialog(null, fornecedorCTR.inserirFornecedor(fornecedorDTO));
+        } catch (Exception e) {
+            System.out.println("Erro ao gravar!" + e.getMessage());
+        }
+    }
+
+    private void preencheTabela(String nome_for) {
+        try {
+            modelo_jtl_consultar_fornecedor.setNumRows(0);
+            fornecedorDTO.setNome_for(nome_for);
+            rs = fornecedorCTR.consultarFornecedor(fornecedorDTO, 1);
+            while (rs.next()) {
+                modelo_jtl_consultar_fornecedor.addRow(new Object[]{
+                    rs.getString("id_for"),
+                    rs.getString("nome_for"),});
+            }
+        } catch (Exception erTab) {
+            System.out.println("Erro SQL: " + erTab);
+        } finally {
+            fornecedorCTR.CloseDB();
+        }
+    }
+
+    private void preencheCampos(int id_for) {
+        try {
+            fornecedorDTO.setId_for(id_for);
+            rs = fornecedorCTR.consultarFornecedor(fornecedorDTO, 2);
+            if (rs.next()) {
+                limpaCampos();
+                nome_for.setText(rs.getString("nome_for"));
+                cnpj_for.setText(rs.getString("cnpj_for"));
+                tel_for.setText(rs.getString("tel_for"));
+                data_cad_for.setText(rs.getString("data_cad_for"));
+
+                gravar_alterar = 2;
+                liberaCampos(true);
+            }
+        } catch (Exception erTab) {
+            System.out.println("Erro SQL: " + erTab);
+        } finally {
+            fornecedorCTR.CloseDB();
+        }
+    }
+
+    private void alterar() {
+        try {
+            fornecedorDTO.setNome_for(nome_for.getText());
+            fornecedorDTO.setCnpj_for(cnpj_for.getText());
+            fornecedorDTO.setTel_for(tel_for.getText());
+            fornecedorDTO.setData_cad_for(data_format.parse(data_cad_for.getText()));
+
+            JOptionPane.showMessageDialog(null, fornecedorCTR.alterarFornecedor(fornecedorDTO));
+        } catch (Exception e) {
+            System.out.println("Erro ao alterar " + e.getMessage());
+        }
+    }
+
+    private void excluir(){
+        if(JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o Fornecedor?", "Aviso",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            JOptionPane.showMessageDialog(null, fornecedorCTR.excluirFornecedor(fornecedorDTO));
+        }
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        data_cad_for = new javax.swing.JTextField();
+        tel_for = new javax.swing.JTextField();
+        cnpj_for = new javax.swing.JTextField();
+        nome_for = new javax.swing.JTextField();
+        btnNovo = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtl_consultar_fornecedor = new javax.swing.JTable();
+        btnPesquisar = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        pesquisa_nome_for = new javax.swing.JTextField();
+
+        jLabel1.setText("Fornecedor");
+
+        jLabel2.setText("Consulta");
+
+        jLabel3.setText("Nome");
+
+        jLabel4.setText("CNPJ");
+
+        jLabel5.setText("Telefone");
+
+        jLabel6.setText("Data Cad");
+
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto_2/imagens/novo.jpeg"))); // NOI18N
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto_2/imagens/salvar.jpeg"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto_2/imagens/cancelar.jpeg"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto_2/imagens/excluir.jpeg"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto_2/imagens/sair.jpeg"))); // NOI18N
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+
+        jtl_consultar_fornecedor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "ID", "Nome"
+            }
+        ));
+        jtl_consultar_fornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtl_consultar_fornecedorMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtl_consultar_fornecedor);
+
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto_2/imagens/buscar.jpeg"))); // NOI18N
+        btnPesquisar.setText("OK");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Nome");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(100, 100, 100))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(data_cad_for, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(tel_for)
+                            .addComponent(cnpj_for)
+                            .addComponent(nome_for))
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(pesquisa_nome_for, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPesquisar)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnNovo)
+                        .addGap(49, 49, 49)
+                        .addComponent(btnSalvar)
+                        .addGap(49, 49, 49)
+                        .addComponent(btnCancelar)
+                        .addGap(49, 49, 49)
+                        .addComponent(btnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addComponent(btnSair)))
+                .addGap(25, 25, 25))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(nome_for, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(btnPesquisar)
+                    .addComponent(pesquisa_nome_for, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(cnpj_for, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(tel_for, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(data_cad_for, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNovo)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnSair))
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        liberaCampos(true);
+        liberaBotoes(false, true, true, false, true);
+        gravar_alterar = 1;
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if (gravar_alterar == 1) {
+            gravar();
+            gravar_alterar = 0;
+        }
+        else{
+            if(gravar_alterar == 2){
+                alterar();
+                gravar_alterar = 0;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Erro no Sistema!");
+            }
+        }
+
+        limpaCampos();
+        liberaCampos(false);
+        liberaBotoes(true, false, false, false, true);
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        limpaCampos();
+        liberaCampos(false);
+        modelo_jtl_consultar_fornecedor.setNumRows(0);
+        liberaBotoes(true, false, false, false, true);
+        gravar_alterar = 0;
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        excluir();
+        limpaCampos();
+        liberaCampos(false);
+        liberaBotoes(true, false, false, false, true);
+        modelo_jtl_consultar_fornecedor.setNumRows(0);
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void jtl_consultar_fornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtl_consultar_fornecedorMouseClicked
+        preencheCampos(Integer.parseInt(String.valueOf(jtl_consultar_fornecedor.getValueAt(jtl_consultar_fornecedor.getSelectedRow(), 0))));
+        liberaBotoes(false, true, true, true, true);
+    }//GEN-LAST:event_jtl_consultar_fornecedorMouseClicked
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        preencheTabela(pesquisa_nome_for.getText());
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnSair;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JTextField cnpj_for;
+    private javax.swing.JTextField data_cad_for;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jtl_consultar_fornecedor;
+    private javax.swing.JTextField nome_for;
+    private javax.swing.JTextField pesquisa_nome_for;
+    private javax.swing.JTextField tel_for;
+    // End of variables declaration//GEN-END:variables
+
+}

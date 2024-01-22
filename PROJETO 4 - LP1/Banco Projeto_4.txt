@@ -1,0 +1,67 @@
+create table carro
+(
+	id_carro serial,
+	nome varchar (50),
+	placa varchar (10),
+	preco_carro double precision,
+	modelo varchar (50),
+	fabricante varchar (50),
+	cor varchar (25),
+	chassi varchar (50),
+	ano integer,
+	constraint carro_pkey primary key (id_carro)
+)
+
+create table cliente
+(
+	id_cliente serial,
+	nome varchar (50),
+	cpf varchar (15),
+	rua varchar (50),
+	numero integer,
+	bairro varchar (50),
+	cidade varchar (50),
+	estado varchar (50),
+	constraint cliente_pkey primary key (id_cliente)
+)
+
+create table garagem
+(
+	id_garagem serial,
+	nome varchar (50),
+	cnpj integer,
+	telefone integer,
+	estoque varchar (100),
+	constraint garagem_pkey primary key (id_garagem)
+)
+
+create table venda
+(
+	id_venda serial,
+	valor_venda double precision,
+	data_venda date,
+	id_cliente integer,
+	constraint venda_pkey primary key (id_venda),
+	constraint venda_id_cliente_fkey foreign key (id_cliente) references cliente (id_cliente)
+)
+
+create table carro_venda
+(
+	id_carro integer,
+	id_venda integer,
+	total_carros integer,
+	total_venda double precision,
+	constraint carro_venda_id_carro_fkey foreign key (id_carro) references carro (id_carro),
+	constraint carro_venda_id_venda_fkey foreign key (id_venda) references venda (id_venda)	
+)
+
+create table funcionario
+(
+	id_fun serial,
+	nome_fun varchar (50),
+	cpf_fun varchar (15),
+	login_fun varchar (50),
+	senha_fun varchar (50),
+	tipo_fun varchar (50),
+	constraint funcionario_pkey primary key (id_fun)
+)

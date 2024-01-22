@@ -1,0 +1,12 @@
+CREATE TABLE jogador(
+	id_jog serial,
+	nome_jog VARCHAR (50),
+	datanasc_jog DATE,
+	numcon_jog INTEGER,
+	tipocon_jog VARCHAR (50),
+	dataini_jog DATE,
+	datater_jog DATE,
+	datapub_jog DATE,
+	clube_jog VARCHAR (50),
+	CONSTRAINT jogador_pkey PRIMARY KEY (id_jog) 
+)

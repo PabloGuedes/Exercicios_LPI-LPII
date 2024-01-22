@@ -1,0 +1,20 @@
+create table fornecedor(
+	id_for serial,
+	nome_for character varying(50),
+	cnpj_for character varying(15),
+	tel_for character varying(13),
+	data_cad_for date,
+	constraint fornecedor_pkey primary key (id_for)
+)
+
+create table produto(
+	id_prod serial,
+	nome_prod character varying(50),
+	desc_prod character varying(50),
+	cod_bar_prod character varying(13),
+	p_custo_prod double precision,
+	p_venda_prod double precision,
+	id_for integer,
+	constraint produto_pkey primary key (id_prod),
+	constraint fornecedor_fk foreign key (id_for) references fornecedor (id_for)
+)
